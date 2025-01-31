@@ -1,24 +1,59 @@
-module head(x){
-    translate([0, 0, x])sphere(x/3, $fn =100);
+
+
+
+module base() {
+    cylinder(h=3, r1=7, r2=6, $fn=50);
 }
 
 
-
-module body(x,y, z){
-        for(i = [0:z:y]){
-            cylinder(100/y, x-i, true, $fn = 105);
-        } 
-}
-
-module body_better(height, width){
-    cylinder(height/width, width,true, $fn = 100);
-    hull(){
-        cylinder(height/10, width/2, true,$fn = 100);
-        translate([0,0,height])cylinder(1, height/width/2, true,$fn = 100);
+module body() {
+    difference(){
+        translate([0, 0, 3]){
+        scale([1, 1, 1.2])
+        sphere(r=6, $fn=50);
+        }
+        translate([0,0, -5]){
+            cube(12, true);
+        }
     }
-    
 }
 
-body_better(10, 5);
-head(10);
 
+module neck() {
+    translate([0, 0, 8])
+    cylinder(h=4, r1=3, r2=3.5, $fn=50);
+}
+
+module head() {
+    translate([0, 0, 12]){
+    sphere(r=3, $fn=50);
+    }
+    translate([0, 0, 18])
+    scale([1, 1, 1.2])
+    sphere(r=4, $fn=50);
+}
+
+
+module black_pawn() {
+    color("#404040"){
+    base();
+    body();
+    neck();
+    head();
+    }
+}
+
+
+module white_pawn() {
+    color("#E0E0E0"){
+    base();
+    body();
+    neck();
+    head();
+    }
+}
+
+
+
+white_pawn();
+translate([20, 0, 0]) black_pawn();
